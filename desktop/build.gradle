@@ -5,8 +5,6 @@ sourceSets.main.resources.srcDirs = ["../assets"]
 project.ext.mainClassName = "com.arkanoid.game.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
-import org.gradle.internal.os.OperatingSystem
-
 tasks.register('run', JavaExec) {
     dependsOn classes
     mainClass = project.mainClassName
