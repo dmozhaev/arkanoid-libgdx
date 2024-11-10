@@ -1,16 +1,14 @@
 package com.arkanoid.game;
 
+import com.arkanoid.game.model.Prefs;
 import com.arkanoid.game.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import space.earlygrey.shapedrawer.ShapeDrawer;
-
-import java.util.List;
 
 public class Arkanoid extends Game {
 	public SpriteBatch batch;
@@ -20,9 +18,7 @@ public class Arkanoid extends Game {
 	private Texture texture;
 	private TextureRegion region;
 
-	public Preferences highScorePrefs;
-	public int highScore;
-	public List<Integer> highScores;
+	public Prefs prefs;
 
 	@Override
 	public void create () {

@@ -36,4 +36,9 @@ public final class Constants {
     public static final int BLOCK_COLUMNS = 13;
     public static final int BLOCK_ROWS = 15;
     public static final int BLOCKS_TOP_Y = SCREEN_HEIGHT - 100;
+
+    // preferences - high scores
+    public static final String PREF_FILE = "arkanoid";
+    public static final String HIGH_SCORES_KEY = "highScores";
+    public static final int HIGH_SCORES_SIZE = 10;
 }

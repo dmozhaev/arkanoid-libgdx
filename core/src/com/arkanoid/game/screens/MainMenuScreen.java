@@ -1,15 +1,13 @@
 package com.arkanoid.game.screens;
 
 import com.arkanoid.game.Arkanoid;
+import com.arkanoid.game.model.Prefs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.util.ArrayList;
 
 import static com.arkanoid.game.Constants.SCREEN_HEIGHT;
 import static com.arkanoid.game.Constants.SCREEN_WIDTH;
@@ -28,19 +26,9 @@ public class MainMenuScreen implements Screen {
         mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3"));
         mainMenuMusic.setLooping(true);
 
-        // load current high scores
-        game.highScorePrefs = Gdx.app.getPreferences("Arkanoid");
-        game.highScore = game.highScorePrefs.getInteger("highScore",0);
-
-        game.highScores = new ArrayList<>();
-        String serializedInts = game.highScorePrefs.getString("highScores");
-        Json json = new Json();
-        int[] ints = json.fromJson(int[].class, serializedInts);
-        if (ints != null) {
-            for (int i : ints) {
-                game.highScores.add(i);
-            }
-        }
+        // load current high scores list
+        game.prefs = new Prefs();
+        game.prefs.initHighScores();
     }
 
     @Override

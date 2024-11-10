@@ -194,18 +194,7 @@ public class GameService {
             paddle.setLives(paddle.getLives() - 1);
             if (paddle.getLives() == 0) {
                 // check high scores
-                if (paddle.getScore() > game.highScore){
-                    game.highScorePrefs.putInteger("highScore", paddle.getScore());
-                    game.highScore = paddle.getScore();
-
-                    Json json = new Json();
-                    game.highScores.add(paddle.getScore());
-                    int[] array = new int[game.highScores.size()];
-                    for(int i = 0; i < game.highScores.size(); i++) array[i] = game.highScores.get(i);
-                    game.highScorePrefs.putString("highScores", json.toJson(array));
-
-                    game.highScorePrefs.flush();
-                }
+                game.prefs.checkAndSaveHighScores(paddle.getScore());
 
                 // game over
                 game.setScreen(new GameOverScreen(game));
@@ -240,7 +229,7 @@ public class GameService {
         gameObjects.add(new TextBox(BOARD_WIDTH + 50, 450, "Ball ratioX: " + ball.getSpeedX() / ball.getSpeedY() + " Ball ratioY: " + ball.getSpeedY() / ball.getSpeedX()));
         gameObjects.add(new TextBox(BOARD_WIDTH + 50, 150, "Lives: " + paddle.getLives()));
         gameObjects.add(new TextBox(BOARD_WIDTH + 50, 100, "Score: " + paddle.getScore()));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 150, 100, "High Score: " + game.highScore));
+        gameObjects.add(new TextBox(BOARD_WIDTH + 150, 100, "High Score: " + (game.prefs.highScores.isEmpty() ? 0 : game.prefs.highScores.getFirst())));
 
         return gameObjects;
     }
