@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static com.arkanoid.game.Constants.*;
 
@@ -14,7 +14,7 @@ public class Prefs {
 
     public Preferences file;
 
-    public List<Integer> highScores;
+    public List<HighScore> highScores;
 
     public Prefs() {
         this.file = Gdx.app.getPreferences(PREF_FILE);
@@ -28,11 +28,11 @@ public class Prefs {
         this.file = file;
     }
 
-    public List<Integer> getHighScores() {
+    public List<HighScore> getHighScores() {
         return highScores;
     }
 
-    public void setHighScores(List<Integer> highScores) {
+    public void setHighScores(List<HighScore> highScores) {
         this.highScores = highScores;
     }
 
@@ -40,15 +40,10 @@ public class Prefs {
      * Init high scores
      */
     public void initHighScores() {
-        List<Integer> highScores = new ArrayList<>();
         Json json = new Json();
-        int[] ints = json.fromJson(int[].class, this.file.getString(HIGH_SCORES_KEY));
-        if (ints != null) {
-            for (int i : ints) {
-                highScores.add(i);
-            }
-        }
-        highScores.sort(Collections.reverseOrder());
+        String jsonString = this.file.getString(HIGH_SCORES_KEY, "[]");
+        List<HighScore> highScores = json.fromJson(ArrayList.class, HighScore.class, jsonString);
+        highScores.sort(Comparator.comparing(HighScore::getScore).reversed());
         this.highScores = highScores;
     }
 
@@ -56,16 +51,20 @@ public class Prefs {
      * Check and save high scores, if necessary
      */
     public void checkAndSaveHighScores(int currentScore) {
-        if (this.highScores.size() < HIGH_SCORES_SIZE || currentScore > this.highScores.getLast()){
+        if (this.highScores.size() < HIGH_SCORES_SIZE || currentScore > this.highScores.getLast().getScore()){
             Json json = new Json();
-            this.highScores.add(currentScore);
-            this.highScores.sort(Collections.reverseOrder());
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            HighScore newHighScore = new HighScore(currentScore, now.format(formatter));
+            this.highScores.add(newHighScore);
+            this.highScores.sort(Comparator.comparing(HighScore::getScore).reversed());
             if (this.highScores.size() > HIGH_SCORES_SIZE) {
                 this.highScores.removeLast();
             }
-            int[] array = new int[this.highScores.size()];
-            for(int i = 0; i < this.highScores.size(); i++) array[i] = this.highScores.get(i);
-            this.file.putString(HIGH_SCORES_KEY, json.toJson(array));
+
+            String jsonString = json.toJson(this.highScores);
+            this.file.putString(HIGH_SCORES_KEY, jsonString);
             this.file.flush();
         }
     }
