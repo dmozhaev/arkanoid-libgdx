@@ -1,7 +1,7 @@
 package com.arkanoid.game.model;
 
 import com.arkanoid.game.Arkanoid;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import static com.arkanoid.game.Constants.*;
@@ -23,7 +23,7 @@ public class Paddle extends GameObject {
 
     private int lives;
 
-    private Color color;
+    private Texture texture;
 
     public int getX() {
         return x;
@@ -89,15 +89,15 @@ public class Paddle extends GameObject {
         this.lives = lives;
     }
 
-    public Color getColor() {
-        return color;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
-    public Paddle(int score, int lives) {
+    public Paddle(int score, int lives, Texture texture) {
         this.x = BOARD_WIDTH / 2 - PADDLE_WIDTH / 2 + WALL_WIDTH;
         this.y = 0;
         this.width = PADDLE_WIDTH;
@@ -106,7 +106,7 @@ public class Paddle extends GameObject {
         this.direction = PaddleDirection.NONE;
         this.score = score;
         this.lives = lives;
-        this.color = PADDLE_COLOR;
+        this.texture = texture;
     }
 
     public Rectangle getRectangle() {
@@ -115,6 +115,6 @@ public class Paddle extends GameObject {
 
     @Override
     public void render(final Arkanoid game) {
-        game.drawer.filledRectangle(x, y, width, height, color);
+        game.batch.draw(texture, x, y, width, height);
     }
 }

@@ -1,7 +1,7 @@
 package com.arkanoid.game.model;
 
 import com.arkanoid.game.Arkanoid;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -22,7 +22,7 @@ public class Ball extends GameObject {
 
     private boolean flying;
 
-    private Color color;
+    private Texture texture;
 
     public int getX() {
         return x;
@@ -80,15 +80,15 @@ public class Ball extends GameObject {
         this.flying = flying;
     }
 
-    public Color getColor() {
-        return color;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
-    public Ball() {
+    public Ball(Texture texture) {
         this.x = BOARD_WIDTH / 2 + WALL_WIDTH;
         this.y = PADDLE_HEIGHT + BALL_RADIUS;
         this.radius = BALL_RADIUS;
@@ -96,7 +96,7 @@ public class Ball extends GameObject {
         this.speedY = BALL_SPEED_INITIAL;
         this.bounceRatio = 1f;
         this.flying = false;
-        this.color = BALL_COLOR;
+        this.texture = texture;
     }
 
     public Circle getCircle() {
@@ -109,6 +109,6 @@ public class Ball extends GameObject {
 
     @Override
     public void render(final Arkanoid game) {
-        game.drawer.filledCircle(x, y, radius);
+        game.batch.draw(texture, x - radius, y - radius, 2 * radius, 2 * radius);
     }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
 import static com.arkanoid.game.Constants.*;
@@ -24,6 +25,9 @@ public class GameScreen implements Screen {
     public Ball ball;
     public Array<Block> blocks;
 
+    public Texture paddleTexture;
+    public Texture ballTexture;
+
     public GameScreen(final Arkanoid game) {
         this.game = game;
 
@@ -34,6 +38,10 @@ public class GameScreen implements Screen {
         // sounds
         paddleSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_paddle.wav"));
         blocksSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_blocks.wav"));
+
+        // textures
+        paddleTexture = new Texture(Gdx.files.internal("paddle.jpg"));
+        ballTexture = new Texture(Gdx.files.internal("ball.png"));
 
         // game objects
         GameService.createGameObjects(this);
@@ -81,5 +89,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         paddleSound.dispose();
         blocksSound.dispose();
+        paddleTexture.dispose();
+        ballTexture.dispose();
     }
 }

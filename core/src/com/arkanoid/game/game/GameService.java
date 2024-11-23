@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import static com.arkanoid.game.Constants.*;
@@ -27,8 +26,8 @@ public class GameService {
                 new Wall(WALL_WIDTH, SCREEN_HEIGHT - WALL_WIDTH, BOARD_WIDTH, WALL_WIDTH),     // top wall
                 new Wall(BOARD_WIDTH + WALL_WIDTH, 0, WALL_WIDTH, SCREEN_HEIGHT)            // right wall
         );
-        gameScreen.paddle = new Paddle(0, PADDLE_LIVES);
-        gameScreen.ball = new Ball();
+        gameScreen.paddle = new Paddle(0, PADDLE_LIVES, gameScreen.paddleTexture);
+        gameScreen.ball = new Ball(gameScreen.ballTexture);
         gameScreen.blocks = new Array<>();
         for (int i = 0; i < BLOCK_ROWS; i++) {
             for (int j = 0; j < BLOCK_COLUMNS; j++) {
@@ -200,8 +199,8 @@ public class GameService {
                 game.setScreen(new GameOverScreen(game));
                 gameScreen.dispose();
             } else {
-                gameScreen.paddle = new Paddle(paddle.getScore(), paddle.getLives());
-                gameScreen.ball = new Ball();
+                gameScreen.paddle = new Paddle(paddle.getScore(), paddle.getLives(), gameScreen.paddleTexture);
+                gameScreen.ball = new Ball(gameScreen.ballTexture);
             }
         }
     }
