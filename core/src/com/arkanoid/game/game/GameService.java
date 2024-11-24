@@ -20,6 +20,8 @@ public class GameService {
      * Create game objects
      */
     public static void createGameObjects(GameScreen gameScreen) {
+        gameScreen.background = new StaticImage(WALL_WIDTH, 0, BOARD_WIDTH, SCREEN_HEIGHT - WALL_WIDTH, gameScreen.backgroundTexture);
+        gameScreen.panel = new StaticImage(2 * WALL_WIDTH + BOARD_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT, gameScreen.panelTexture);
         gameScreen.walls = new Array<>();
         gameScreen.walls.add(
                 new Wall(0, 0, WALL_WIDTH, SCREEN_HEIGHT, gameScreen.wallSideTexture),                                  // left wall
@@ -210,17 +212,19 @@ public class GameService {
      */
     private static Array<GameObject> collectGameObjects(GameScreen gameScreen) {
         Arkanoid game = gameScreen.game;
-        Array<Wall> walls = gameScreen.walls;
         Ball ball = gameScreen.ball;
         Paddle paddle = gameScreen.paddle;
-        Array<Block> blocks = gameScreen.blocks;
         Array<GameObject> gameObjects = new Array<>();
 
+        // copy static images
+        gameObjects.add(gameScreen.background);
+        gameObjects.add(gameScreen.panel);
+
         // copy game objects
-        gameObjects.addAll((Array<GameObject>)(Array<?>)walls);
+        gameObjects.addAll((Array<GameObject>)(Array<?>)gameScreen.walls);
         gameObjects.add(paddle);
         gameObjects.add(ball);
-        gameObjects.addAll((Array<GameObject>)(Array<?>)blocks);
+        gameObjects.addAll((Array<GameObject>)(Array<?>)gameScreen.blocks);
 
         // add texts
         gameObjects.add(new TextBox(BOARD_WIDTH + 50, 550, "Paddle speed: " + paddle.getSpeed()));

@@ -20,11 +20,15 @@ public class GameScreen implements Screen {
     public Sound paddleSound;
     public Sound blocksSound;
 
+    public StaticImage background;
+    public StaticImage panel;
     public Array<Wall> walls;
     public Paddle paddle;
     public Ball ball;
     public Array<Block> blocks;
 
+    public Texture backgroundTexture;
+    public Texture panelTexture;
     public Texture paddleTexture;
     public Texture ballTexture;
     public Texture blockTexture;
@@ -43,11 +47,13 @@ public class GameScreen implements Screen {
         blocksSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_blocks.wav"));
 
         // textures
-        paddleTexture = new Texture(Gdx.files.internal("paddle.jpg"));
-        ballTexture = new Texture(Gdx.files.internal("ball.png"));
-        blockTexture = new Texture(Gdx.files.internal("block.jpg"));
-        wallSideTexture = new Texture(Gdx.files.internal("wall_side.jpg"));
-        wallTopTexture = new Texture(Gdx.files.internal("wall_top.jpg"));
+        backgroundTexture = new Texture(Gdx.files.internal("graphics/background.jpg"));
+        panelTexture = new Texture(Gdx.files.internal("graphics/panel.jpg"));
+        paddleTexture = new Texture(Gdx.files.internal("graphics/paddle.jpg"));
+        ballTexture = new Texture(Gdx.files.internal("graphics/ball.png"));
+        blockTexture = new Texture(Gdx.files.internal("graphics/block.jpg"));
+        wallSideTexture = new Texture(Gdx.files.internal("graphics/wall_side.jpg"));
+        wallTopTexture = new Texture(Gdx.files.internal("graphics/wall_top.jpg"));
 
         // game objects
         GameService.createGameObjects(this);
@@ -93,6 +99,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        backgroundTexture.dispose();
+        panelTexture.dispose();
         paddleSound.dispose();
         blocksSound.dispose();
         paddleTexture.dispose();
