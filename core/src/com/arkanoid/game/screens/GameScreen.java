@@ -5,6 +5,7 @@ import com.arkanoid.game.game.GameService;
 import com.arkanoid.game.model.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +18,7 @@ public class GameScreen implements Screen {
 
     public OrthographicCamera camera;
 
+    public Music ingameMusic;
     public Sound paddleSound;
     public Sound blocksSound;
     public Sound lifeLostSound;
@@ -42,6 +44,11 @@ public class GameScreen implements Screen {
         // camera
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        // music
+        ingameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/ingame.mp3"));
+        ingameMusic.setLooping(true);
+        ingameMusic.play();
 
         // sounds
         paddleSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_paddle.wav"));
@@ -101,6 +108,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        ingameMusic.dispose();
         lifeLostSound.dispose();
         paddleSound.dispose();
         blocksSound.dispose();

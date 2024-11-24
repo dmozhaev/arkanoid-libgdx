@@ -25,6 +25,7 @@ public class MainMenuScreen implements Screen {
 
         mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3"));
         mainMenuMusic.setLooping(true);
+        mainMenuMusic.play();
 
         // load current high scores list
         game.prefs = new Prefs();
@@ -42,8 +43,6 @@ public class MainMenuScreen implements Screen {
         game.font.draw(game.batch, "Welcome to Arkanoid!!! ", 100, 150);
         game.font.draw(game.batch, "Tap any key to begin!", 100, 100);
         game.batch.end();
-
-        mainMenuMusic.play();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));

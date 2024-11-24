@@ -24,6 +24,7 @@ public class GameOverScreen implements Screen {
 
         gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3"));
         gameOverMusic.setLooping(true);
+        gameOverMusic.play();
     }
 
     @Override
@@ -36,8 +37,6 @@ public class GameOverScreen implements Screen {
         game.batch.begin();
         game.font.draw(game.batch, "Game over :(", 100, 150);
         game.batch.end();
-
-        gameOverMusic.play();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             System.exit(0);
