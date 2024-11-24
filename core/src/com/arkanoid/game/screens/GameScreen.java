@@ -19,6 +19,7 @@ public class GameScreen implements Screen {
 
     public Sound paddleSound;
     public Sound blocksSound;
+    public Sound lifeLostSound;
 
     public StaticImage background;
     public StaticImage panel;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
         // sounds
         paddleSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_paddle.wav"));
         blocksSound = Gdx.audio.newSound(Gdx.files.internal("sound/collision_blocks.wav"));
+        lifeLostSound = Gdx.audio.newSound(Gdx.files.internal("sound/life_lost.mp3"));
 
         // textures
         backgroundTexture = new Texture(Gdx.files.internal("graphics/background.jpg"));
@@ -99,10 +101,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        backgroundTexture.dispose();
-        panelTexture.dispose();
+        lifeLostSound.dispose();
         paddleSound.dispose();
         blocksSound.dispose();
+
+        backgroundTexture.dispose();
+        panelTexture.dispose();
         paddleTexture.dispose();
         ballTexture.dispose();
         blockTexture.dispose();

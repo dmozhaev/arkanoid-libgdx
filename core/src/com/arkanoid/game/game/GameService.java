@@ -92,7 +92,6 @@ public class GameService {
      * Collision detection
      */
     public static void detectCollisions(GameScreen gameScreen, float delta) {
-        Array<Wall> walls = gameScreen.walls;
         Ball ball = gameScreen.ball;
         Paddle paddle = gameScreen.paddle;
         Array<Block> blocks = gameScreen.blocks;
@@ -203,6 +202,7 @@ public class GameService {
             } else {
                 gameScreen.paddle = new Paddle(paddle.getScore(), paddle.getLives(), gameScreen.paddleTexture);
                 gameScreen.ball = new Ball(gameScreen.ballTexture);
+                gameScreen.lifeLostSound.play();
             }
         }
     }
