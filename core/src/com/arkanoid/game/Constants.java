@@ -34,8 +34,8 @@ public final class Constants {
     public static final int BLOCK_HEIGHT = 15;
     public static final int BLOCK_GAP = 1;
     public static final int BLOCK_COLUMNS = 13;
-    public static final int BLOCK_ROWS = 15;
-    public static final int BLOCKS_TOP_Y = SCREEN_HEIGHT - 100;
+    public static final int BLOCK_ROWS = 25;
+    public static final int BLOCKS_TOP_Y = SCREEN_HEIGHT - (WALL_WIDTH + BLOCK_HEIGHT);
 
     // preferences - high scores
     public static final String PREF_FILE = "arkanoid";
