@@ -22,16 +22,16 @@ public class GameService {
     public static void createGameObjects(GameScreen gameScreen) {
         gameScreen.walls = new Array<>();
         gameScreen.walls.add(
-                new Wall(0, 0, WALL_WIDTH, SCREEN_HEIGHT),                                  // left wall
-                new Wall(WALL_WIDTH, SCREEN_HEIGHT - WALL_WIDTH, BOARD_WIDTH, WALL_WIDTH),     // top wall
-                new Wall(BOARD_WIDTH + WALL_WIDTH, 0, WALL_WIDTH, SCREEN_HEIGHT)            // right wall
+                new Wall(0, 0, WALL_WIDTH, SCREEN_HEIGHT, gameScreen.wallSideTexture),                                  // left wall
+                new Wall(WALL_WIDTH, SCREEN_HEIGHT - WALL_WIDTH, BOARD_WIDTH, WALL_WIDTH, gameScreen.wallTopTexture),      // top wall
+                new Wall(BOARD_WIDTH + WALL_WIDTH, 0, WALL_WIDTH, SCREEN_HEIGHT, gameScreen.wallSideTexture)            // right wall
         );
         gameScreen.paddle = new Paddle(0, PADDLE_LIVES, gameScreen.paddleTexture);
         gameScreen.ball = new Ball(gameScreen.ballTexture);
         gameScreen.blocks = new Array<>();
         for (int i = 0; i < BLOCK_ROWS; i++) {
             for (int j = 0; j < BLOCK_COLUMNS; j++) {
-                gameScreen.blocks.add(new Block(WALL_WIDTH + (BLOCK_WIDTH + BLOCK_GAP) * j, BLOCKS_TOP_Y - (BLOCK_HEIGHT + BLOCK_GAP) * i));
+                gameScreen.blocks.add(new Block(WALL_WIDTH + (BLOCK_WIDTH + BLOCK_GAP) * j, BLOCKS_TOP_Y - (BLOCK_HEIGHT + BLOCK_GAP) * i, gameScreen.blockTexture));
             }
         }
     }

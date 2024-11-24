@@ -1,10 +1,8 @@
 package com.arkanoid.game.model;
 
 import com.arkanoid.game.Arkanoid;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-
-import static com.arkanoid.game.Constants.*;
 
 public class Wall extends GameObject {
     protected int x;
@@ -15,7 +13,7 @@ public class Wall extends GameObject {
 
     private int height;
 
-    private Color color;
+    private Texture texture;
 
     public int getX() {
         return x;
@@ -49,20 +47,20 @@ public class Wall extends GameObject {
         this.height = height;
     }
 
-    public Color getColor() {
-        return color;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
-    public Wall(int x, int y, int width, int height) {
+    public Wall(int x, int y, int width, int height, Texture texture) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = WALL_COLOR;
+        this.texture = texture;
     }
 
     public Rectangle getRectangle() {
@@ -71,6 +69,6 @@ public class Wall extends GameObject {
 
     @Override
     public void render(final Arkanoid game) {
-        game.drawer.filledRectangle(x, y, width, height, color);
+        game.batch.draw(texture, x, y, width, height);
     }
 }

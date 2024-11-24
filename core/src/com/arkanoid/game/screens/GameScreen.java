@@ -27,6 +27,9 @@ public class GameScreen implements Screen {
 
     public Texture paddleTexture;
     public Texture ballTexture;
+    public Texture blockTexture;
+    public Texture wallSideTexture;
+    public Texture wallTopTexture;
 
     public GameScreen(final Arkanoid game) {
         this.game = game;
@@ -42,6 +45,9 @@ public class GameScreen implements Screen {
         // textures
         paddleTexture = new Texture(Gdx.files.internal("paddle.jpg"));
         ballTexture = new Texture(Gdx.files.internal("ball.png"));
+        blockTexture = new Texture(Gdx.files.internal("block.jpg"));
+        wallSideTexture = new Texture(Gdx.files.internal("wall_side.jpg"));
+        wallTopTexture = new Texture(Gdx.files.internal("wall_top.jpg"));
 
         // game objects
         GameService.createGameObjects(this);
@@ -91,5 +97,8 @@ public class GameScreen implements Screen {
         blocksSound.dispose();
         paddleTexture.dispose();
         ballTexture.dispose();
+        blockTexture.dispose();
+        wallSideTexture.dispose();
+        wallTopTexture.dispose();
     }
 }
