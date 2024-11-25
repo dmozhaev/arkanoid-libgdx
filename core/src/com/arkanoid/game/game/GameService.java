@@ -245,7 +245,7 @@ public class GameService {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         ScreenUtils.clear(0, 0, 0, 1);
-        for (GameObject gameObject: GameService.collectGameObjects(gameScreen)) {
+        for (GameObject gameObject : collectGameObjects(gameScreen)) {
             gameObject.render(game);
         }
         game.batch.end();

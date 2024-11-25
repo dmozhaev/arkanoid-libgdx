@@ -16,19 +16,19 @@ import static com.arkanoid.game.Constants.*;
 public class GameScreen implements Screen {
     public final Arkanoid game;
 
-    public OrthographicCamera camera;
-
-    public Music ingameMusic;
-    public Sound paddleSound;
-    public Sound blocksSound;
-    public Sound lifeLostSound;
-
     public StaticImage background;
     public StaticImage panel;
     public Array<Wall> walls;
     public Paddle paddle;
     public Ball ball;
     public Array<Block> blocks;
+
+    public OrthographicCamera camera;
+
+    public Music ingameMusic;
+    public Sound paddleSound;
+    public Sound blocksSound;
+    public Sound lifeLostSound;
 
     public Texture backgroundTexture;
     public Texture panelTexture;
