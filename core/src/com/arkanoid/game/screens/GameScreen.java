@@ -1,7 +1,7 @@
 package com.arkanoid.game.screens;
 
 import com.arkanoid.game.Arkanoid;
-import com.arkanoid.game.game.GameService;
+import com.arkanoid.game.service.GameService;
 import com.arkanoid.game.model.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

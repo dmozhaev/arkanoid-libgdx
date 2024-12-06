@@ -1,4 +1,4 @@
-package com.arkanoid.game.game;
+package com.arkanoid.game.service;
 
 import com.arkanoid.game.Arkanoid;
 import com.arkanoid.game.model.*;
