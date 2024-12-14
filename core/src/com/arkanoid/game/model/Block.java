@@ -4,8 +4,7 @@ import com.arkanoid.game.Arkanoid;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-import static com.arkanoid.game.Constants.BLOCK_HEIGHT;
-import static com.arkanoid.game.Constants.BLOCK_WIDTH;
+import static com.arkanoid.game.Constants.*;
 
 public class Block extends GameObject {
     protected int x;
@@ -17,6 +16,8 @@ public class Block extends GameObject {
     private int height;
 
     private Texture texture;
+
+    private int hitsLeft;
 
     public int getX() {
         return x;
@@ -58,11 +59,28 @@ public class Block extends GameObject {
         this.texture = texture;
     }
 
-    public Block(int x, int y, Texture texture) {
+    public int getHitsLeft() {
+        return hitsLeft;
+    }
+
+    public void setHitsLeft(int hitsLeft) {
+        this.hitsLeft = hitsLeft;
+    }
+
+    public void takeScoringHit() {
+        this.hitsLeft--;
+    }
+
+    public boolean isInvincible() {
+        return this.hitsLeft == -1;
+    }
+
+    public Block(int x, int y, int hitsLeft, Texture texture) {
         this.x = x;
         this.y = y;
         this.width = BLOCK_WIDTH;
         this.height = BLOCK_HEIGHT;
+        this.hitsLeft = hitsLeft;
         this.texture = texture;
     }
 
@@ -73,5 +91,8 @@ public class Block extends GameObject {
     @Override
     public void render(final Arkanoid game) {
         game.batch.draw(texture, x, y, width, height);
+        if (DEV_INFO_ON) {
+            game.font.draw(game.batch, String.valueOf(this.hitsLeft), x + 17, y + 13);
+        }
     }
 }

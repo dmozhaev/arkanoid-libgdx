@@ -3,6 +3,9 @@ package com.arkanoid.game;
 import com.badlogic.gdx.graphics.Color;
 
 public final class Constants {
+    // dev settings
+    public static final boolean DEV_INFO_ON = true;
+
     // screen width and length
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
@@ -14,7 +17,7 @@ public final class Constants {
     // paddle
     public static final int PADDLE_WIDTH = 75;
     public static final int PADDLE_HEIGHT = 15;
-    public static final int PADDLE_SPEED_INITIAL = 200;
+    public static final int PADDLE_SPEED_INITIAL = 300;
     public static final int PADDLE_SPEED_INCREMENT = 15;
     public static final int PADDLE_SPEED_MAX = 1000;
     public static final int PADDLE_LIVES = 1;

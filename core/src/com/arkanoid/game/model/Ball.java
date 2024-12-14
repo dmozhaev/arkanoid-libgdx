@@ -12,6 +12,10 @@ public class Ball extends GameObject {
 
     private int y;
 
+    private int prevX;
+
+    private int prevY;
+
     private int radius;
 
     private float speedX;
@@ -29,6 +33,7 @@ public class Ball extends GameObject {
     }
 
     public void setX(int x) {
+        this.prevX = this.x;
         this.x = x;
     }
 
@@ -37,7 +42,24 @@ public class Ball extends GameObject {
     }
 
     public void setY(int y) {
+        this.prevY = this.y;
         this.y = y;
+    }
+
+    public int getPrevX() {
+        return prevX;
+    }
+
+    public void setPrevX(int prevX) {
+        this.prevX = prevX;
+    }
+
+    public int getPrevY() {
+        return prevY;
+    }
+
+    public void setPrevY(int prevY) {
+        this.prevY = prevY;
     }
 
     public int getRadius() {

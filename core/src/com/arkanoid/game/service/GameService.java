@@ -12,8 +12,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Random;
+
 import static com.arkanoid.game.Constants.*;
 import static com.arkanoid.game.Constants.PADDLE_SPEED_MAX;
+import static com.arkanoid.game.util.GameUtils.*;
+import static java.lang.Math.abs;
 
 public class GameService {
     /**
@@ -33,7 +37,10 @@ public class GameService {
         gameScreen.blocks = new Array<>();
         for (int i = 0; i < BLOCK_ROWS; i++) {
             for (int j = 0; j < BLOCK_COLUMNS; j++) {
-                gameScreen.blocks.add(new Block(WALL_WIDTH + (BLOCK_WIDTH + BLOCK_GAP) * j, BLOCKS_TOP_Y - (BLOCK_HEIGHT + BLOCK_GAP) * i, gameScreen.blockTexture));
+                int hitsLeft = new int[]{-1, 1, 2}[new Random().nextInt(3)];
+                if (hitsLeft != 2) {
+                    gameScreen.blocks.add(new Block(WALL_WIDTH + (BLOCK_WIDTH + BLOCK_GAP) * j, BLOCKS_TOP_Y - (BLOCK_HEIGHT + BLOCK_GAP) * i, hitsLeft, gameScreen.blockTexture));
+                }
             }
         }
     }
@@ -120,26 +127,37 @@ public class GameService {
             }
         }
         // ball <-> blocks
-        for (Block block: blocks) {
-            if (Intersector.overlaps(ball.getCircle(), block.getRectangle())){
-                gameScreen.blocksSound.play();
-                Rectangle intersection = new Rectangle();
-                Intersector.intersectRectangles(ball.getRectangle(), block.getRectangle(), intersection);
+        // 1 - if ball comes from up or down (oldY) -> revertY
+        // 2 - if ball comes from left or right (oldX) -> revertX
+        // 3 (else) - corner,
+        //    a - if intersection.width >= intersection.height -> revertY
+        //    b - else -> revertX
+        Array<Block> collisionBlocks = getCollisionBlocks(ball, blocks);
+        for (Block block : collisionBlocks) {
+            gameScreen.blocksSound.play();
+            Rectangle intersection = new Rectangle();
+            Intersector.intersectRectangles(ball.getRectangle(), block.getRectangle(), intersection);
 
-                // checking direction of the collision
-                if (intersection.y == block.getY() || intersection.y + intersection.height == block.getY() + block.getHeight()) {
-                    // ball touched top / bottom / corner of the block
-                    ball.setY(Math.round(ball.getY() - ball.getSpeedY() * delta));
+            // checking direction of the collision
+            if (!revertSpeedY && ball.getPrevX() - ball.getRadius() >= block.getX() && ball.getPrevX() + ball.getRadius() <= block.getX() + block.getWidth()) {
+                takeHitUpDown(gameScreen, block, delta);
+                revertSpeedY = true;
+            } else if (!revertSpeedX && ball.getPrevY() - ball.getRadius() >= block.getY() && ball.getPrevY() + ball.getRadius() <= block.getY() + block.getHeight()) {
+                takeHitSides(gameScreen, block, delta);
+                revertSpeedX = true;
+            } else {
+                // corner
+                if (!revertSpeedY && intersection.width >= intersection.height) {
+                    takeHitUpDown(gameScreen, block, delta);
                     revertSpeedY = true;
-                } else {
-                    // ball touched left / right side of the block
-                    ball.setX(Math.round(ball.getX() - ball.getSpeedX() * delta));
+                }
+                if (!revertSpeedX && intersection.width < intersection.height) {
+                    takeHitSides(gameScreen, block, delta);
                     revertSpeedX = true;
                 }
-
-                paddle.setScore(paddle.getScore() + 1);
-                blocks.removeValue(block, false);
             }
+
+            if (revertSpeedY && revertSpeedX) break;
         }
         // ball <-> left wall
         if (ball.getX() < WALL_WIDTH + BALL_RADIUS){
@@ -163,7 +181,7 @@ public class GameService {
             int incrementY = ball.getSpeedY() > 0 ? BALL_SPEED_INCREMENT : -BALL_SPEED_INCREMENT;
             float speedXProjected = (ball.getSpeedX() + incrementX) * ball.getBounceRatio();
             float speedYProjected = (ball.getSpeedY() + incrementY) / ball.getBounceRatio();
-            if (Math.abs(speedXProjected) / Math.abs(speedYProjected) > BALL_BOUNCE_MAX_RATIO || Math.abs(speedYProjected) / Math.abs(speedXProjected) > BALL_BOUNCE_MAX_RATIO) {
+            if (abs(speedXProjected) / abs(speedYProjected) > BALL_BOUNCE_MAX_RATIO || abs(speedYProjected) / abs(speedXProjected) > BALL_BOUNCE_MAX_RATIO) {
                 ball.setSpeedX(ball.getSpeedX() + incrementX);
                 ball.setSpeedY(ball.getSpeedY() + incrementY);
             } else {
@@ -210,33 +228,6 @@ public class GameService {
     /**
      * Draw / render game objects
      */
-    private static Array<GameObject> collectGameObjects(GameScreen gameScreen) {
-        Arkanoid game = gameScreen.game;
-        Ball ball = gameScreen.ball;
-        Paddle paddle = gameScreen.paddle;
-        Array<GameObject> gameObjects = new Array<>();
-
-        // copy static images
-        gameObjects.add(gameScreen.background);
-        gameObjects.add(gameScreen.panel);
-
-        // copy game objects
-        gameObjects.addAll((Array<GameObject>)(Array<?>)gameScreen.walls);
-        gameObjects.add(paddle);
-        gameObjects.add(ball);
-        gameObjects.addAll((Array<GameObject>)(Array<?>)gameScreen.blocks);
-
-        // add texts
-        gameObjects.add(new TextBox(BOARD_WIDTH + 50, 550, "Paddle speed: " + paddle.getSpeed()));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 50, 500, "Ball speedX: " + Math.round(ball.getSpeedX()) + " Ball speedY: " + Math.round(ball.getSpeedY())));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 50, 450, "Ball ratioX: " + ball.getSpeedX() / ball.getSpeedY() + " Ball ratioY: " + ball.getSpeedY() / ball.getSpeedX()));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 50, 150, "Lives: " + paddle.getLives()));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 50, 100, "Score: " + paddle.getScore()));
-        gameObjects.add(new TextBox(BOARD_WIDTH + 150, 100, "High Score: " + (game.prefs.highScores.isEmpty() ? 0 : game.prefs.highScores.getFirst())));
-
-        return gameObjects;
-    }
-
     public static void draw(GameScreen gameScreen) {
         Arkanoid game = gameScreen.game;
         OrthographicCamera camera = gameScreen.camera;
